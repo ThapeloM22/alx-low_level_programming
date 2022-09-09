@@ -12,7 +12,7 @@ int main(void)
 {
 	int i, j, k;
 
-	i = 48
+	i = 48;
 	j = 48;
 	k = 48;
 
@@ -37,9 +37,10 @@ int main(void)
 			j++;
 		}
 
+		i++;
 	}
 
 	putchar(10);
-
+	
 	return (0);
 }
