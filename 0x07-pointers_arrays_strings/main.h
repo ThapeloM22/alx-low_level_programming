@@ -1,32 +1,17 @@
-/**
- * _memset - a function that fills
- * memory with a constant byte
- *
- * @s: input pointer to char type
- * represents the pointer to the
- * block of memory to fill
- * @b: input variable of char type
- * represents the character to
- * fill s
- * @n: unsigned int variable
- * the number of bytes to be filled
- *
- * Return: A pointer to the filled memory
- * area @s
- */
+#ifndef MAIN_H
+#define MAIN_H
 
-char *_memset(char *s, char b, unsigned int n)
-{
-	/**
-	 * declare an unsigned int
-	 * because we are storing a
-	 * value that will always be
-	 * non-negative (zero or positive)
-	 */
-	unsigned int i;
+#include <stdio.h>
 
-	for (i = 0; i < n; i++)
-		s[i] = b;
+char *_memset(char *s, char b, unsigned int n);
+char *_memcpy(char *dest, char *src, unsigned int n);
+char *_strchr(char *s, char c);
+unsigned int _strspn(char *s, char *accept);
+char *_strpbrk(char *s, char *accept);
+char *_strstr(char *haystack, char *needle);
+void print_chessboard(char (*a)[8]);
+int _putchar(char c);
+void print_diagsums(int *a, int size);
+void set_string(char **s, char *to);
 
-	return (s);
-}
+#endif /*MAIN_H*/
