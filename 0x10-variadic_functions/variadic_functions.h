@@ -14,7 +14,7 @@ void print_all(const char * const format, ...);
  *
  * @symbol: Our symbol representing the data type
  * @print_func: a function pointer that prints
- * a data type according to the symbol
+ * 		a data type according to the symbol
  */
 typedef struct print
 {
