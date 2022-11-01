@@ -1,67 +1,37 @@
 #include "main.h"
-#include <stdarg.h>
 
 /**
- * error_handler - handles errors for cp
- * @exit_code: exit code
- * @message: error message
- * @type: data type for format
+ * append_text_to_file - a funcion that appends text at the end
+ * of a file
+ *
+ * @filename: file to add data to
+ * @text_content: text content to add to file
+ *
+ * Return: 1 on success, -1 on failure
  */
-
-void error_handler(int exit_code, char *message, char type, ...)
+int append_text_to_file(const char *filename, char *text_content)
 {
-	va_list args;
+	int file, app_status, words = 0;
 
-	va_start(args, type);
-	if (type == 's')
-		dprintf(STDERR_FILENO, message, va_arg(args, char *));
-	else if (type == 'd')
-		dprintf(STDERR_FILENO, message, va_arg(args, int));
-	else if (type == 'N')
-		dprintf(STDERR_FILENO, message, "");
-	else
-		dprintf(STDERR_FILENO, "Error: Does not match any type\n");
-	va_end(args);
-	exit(exit_code);
-}
+	if (filename == NULL) /*check if file is present*/
+		return (-1);
 
-/**
- * main - copies the content of a file to another file
- * @argc: number of arguments
- * @argv: array of arguments
- * Return:  0 (Always)
- */
+	/*open file, with append option with write rights*/
+	file = open(filename, O_APPEND | O_WRONLY);
+	if (file == -1) /*check if file is present*/
+		return (-1);
 
-int main(int argc, char *argv[])
-{
-	char buffer[1024];
-	int fd_s, fd_d;
-	ssize_t bytes_read, bytes_written;
-
-	if (argc != 3)
-		error_handler(97, "Usage: cp file_from file_to\n", 'N');
-
-	fd_s = open(argv[1], O_RDONLY);
-	if (fd_s == -1)
-		error_handler(98, "Error: Can't read from file %s\n", 's', argv[1]);
-
-	fd_d = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (fd_d == -1)
-		error_handler(99, "Error: Can't write to %s\n", 's', argv[2]);
-
-	while ((bytes_read = read(fd_s, buffer, 1024)) > 0)
+	if (text_content) /*append content to file if its not NULL*/
 	{
-		bytes_written = write(fd_d, buffer, bytes_read);
-		if (bytes_written == -1)
-			error_handler(99, "Error: Can't write to %s\n", 's', argv[2]);
+		while (text_content[words] != '\0') /*find number of words*/
+			words++;
+
+		/*append to file*/
+		app_status = write(file, text_content, words);
+		if (app_status == -1) /*check if append was a success*/
+			return (-1);
 	}
 
-	if (bytes_read == -1)
-		error_handler(98, "Error: Can't read from file %s\n", 's', argv[1]);
-	if (close(fd_s) == -1)
-		error_handler(100, "Error: Can't close fd %d\n", 'd', fd_s);
-	if (close(fd_d) == -1)
-		error_handler(100, "Error: Can't close fd %d\n", 'd', fd_d);
-
-	return (0);
+	close(file); /*close file*/
+	return (1);
 }
